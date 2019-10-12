@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <meta property="og:description" content="1.依赖依赖就是有联系，有地方使用到它就是有依赖它，一个系统不可能完全避免依赖。如果你的一个类或者模块在项目中没有用到它，恭喜你，可以从项目中剔除它或者排除它了，因为没有一个地方会依赖它。下面看一个简" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>IoC模式 - Qlin - 博客园</title>
+    
+    <link rel="stylesheet" href="/css/blog-common.min.css?v=sqi5FxOybx6gjGoG6Zfy1wD-0AwznLNLYOVx7Y9tIN0" />
+    <link id="MainCss" rel="stylesheet" href="/skins/nature/bundle-nature.min.css?v=OGPViv8ygSk1htOgsEILRhpv35ZKyr-flppEtpvHCA0" />
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/nature/bundle-nature-mobile.min.css?v=UTcEHNLmNeFi51E-Gk_ezuJ8TZzUzdlc3gjygS2o_cs" />
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/qqlin/rss" />
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/qqlin/rsd.xml" />
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/qqlin/wlwmanifest.xml" />
+    <script src="https://common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script src="/js/blog-common.min.js?v=4QhAuTQQoOm-lM3IPePkpoT4bSJvxH-elPKwr4VYOAI"></script>
+    <script>
+        var currentBlogId = 121548;
+        var currentBlogApp = 'qqlin';
+        var cb_enable_mathjax = false;
+        var isLogined = true;
+    </script>
+    
+    
+    
+</head>
+<body>
+    <a name="top"></a>
+    <div id="page_begin_html">
+        <style type="text/css">
+h2.listtitle
+        {
+            display: none;
+        }
+        .newsItem
+        {
+            padding: 0px;
+        }
+        #profile_block
+        {
+            padding: 0 15px;
+        }
+        #mylinks
+        {
+            font-size: 13px;
+            height: 40px;
+            padding: 0px;
+        }
+       .blog_comment_body a
+        {
+            color: #009933;
+        }
+        #mylinks a
+        {
+            margin: 0;
+            height: 40px;
+            line-height: 40px;
+            display: inline-block;
+            padding: 0 20px;
+            text-decoration: none;
+            border: 0;
+            color: #666666;
+            font-weight: bold;
+            display: -moz-inline-box;
+            display: inline-block;
+        }
+       #mylinks a: link
+        {
+            color: #666666;
+        }
+       #mylinks A:visited
+        {
+            color: #666666;
+        }
+       #mylinks A:active
+        {
+            color: #666666;
+        }
+       #mylinks A:hover
+        {
+            color: #009933;
+        }
+        #Header1_HeaderTitle
+        {
+            color: #FF9999;
+            font-size: 32px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        #bnr_pic
+        {
+            background: none repeat scroll 0 0;
+        }
+        #banner
+        {
+            height: 140px;
+        }
+        #left
+        {
+            top: 100px;
+        }
+        #blog_logo
+        {
+            height: 140px;
+            width: 200px;
+            position: absolute;
+            right: 200px;
+            top: 0px;
+        }
+
+.postTitle h1 {
+    font-size: 22px;
+    padding-left: 0;
+}
+#cnblogs_post_body h1 {
+    background-color: #A5A5A5;
+    color: white;
+    padding: 5px;
+}
+#cnblogs_post_body h1, #cnblogs_post_body h2, #cnblogs_post_body h3 {
+    margin-bottom: 12px;
+    margin-top: 24px;
+}
+#navCategory ul li {
+    margin: 0;
+    padding: 3px;
+}
+#cnblogs_post_body, #navCategory {
+    font-family: "Courier New",微软雅黑,Consolas,Arial,宋体;
+    font-size: 13px;
+}
+.feedbackItem {
+  background-color: #FAFAFF;
+  border: 1px dashed #676767;
+  line-height: 150%;
+  margin-bottom: 5px;
+  margin-top: 20px;
+  padding: 5px 10px;
+}
+</style>
+    </div>
+    <!--done-->
+<div id="banner"><div id="bnr_pic">
+<!--done-->
+<div class="header">
+	<div class="headerText">
+		<a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/qqlin/">Qlin'S Blog</a>
+<br>
+	</div><br>
+	<div class="headerDis">
+世界是一本书，不旅行的人只看到其中的一页。出去走走，看看不同的风景，接触不同的人和事，你会发现，你的烦恼原来是那么微不足道。 
+
+<div id="blog_logo">
+<div>○○○○（◎）</div>
+<div>-（　　　　）</div>
+<div>----）　　（</div>
+<div>--（　　　　）----（◎）○○○○</div>
+<div>----╰－－╯-------（　　　　）</div>
+<div>---------------------）　　（</div>
+<div>-------------------（　　　　）</div>
+<div>---------------------╰－－╯ </div>
+</div>
+</div>
+</div>
+
+</div></div>
+<div id="main">
+	<!-- left starts -->
+	<div id="left">
+		<DIV id="mystats">
+			<br/>
+				<!--done-->
+<div class="blogStats">
+随笔 - 
+42&nbsp;
+文章 - 
+0&nbsp;
+评论 - 
+209&nbsp;
+
+0
+</div>
+
+
+			
+		</DIV>
+		<div id="mylinks">
+
+<a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+&nbsp;&nbsp;
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/qqlin/">
+首页</a>
+&nbsp;&nbsp;
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+&nbsp;&nbsp;
+<a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/qqlin/rss/">
+订阅</a>&nbsp;
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/qqlin/rss/">
+    <img src="/skins/nature/images/xml.gif" alt="订阅" />
+</a>
+
+</div>
+		<div id="topics">
+			<div id="post_detail">
+<div class="post">
+	<div class="postTitle">
+		<h1>
+<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/qqlin/archive/2012/10/09/2707075.html">IoC模式</a>
+</h1>
+	</div>
+	
+<div id="cnblogs_post_body" class="blogpost-body ">
+    <h1>1.依赖</h1>
+<p>依赖就是有联系，有地方使用到它就是有依赖它，一个系统不可能完全避免依赖。如果你的一个类或者模块在项目中没有用到它，恭喜你，可以从项目中剔除它或者排除它了，因为没有一个地方会依赖它。下面看一个简单的示例：</p>
+<div class="cnblogs_code">
+<pre>    <span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 用户播放媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> OperationMain
+    {<br /><br /></span><span style="color: #0000ff;">        public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> PlayMedia()
+        {
+            MediaFile _mtype </span>= <span style="color: #0000ff;">new</span><span style="color: #000000;"> MediaFile();
+            Player _player </span>= <span style="color: #0000ff;">new</span><span style="color: #000000;"> Player();
+
+            _player.Play(_mtype);
+        }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 播放器
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> Player
+    {
+        </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> Play(MediaFile file)
+        {
+            Console.WriteLine(file.FilePath);
+        }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> MediaFile
+    {
+        </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">string</span> FilePath { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span><span style="color: #000000;">; }
+    }</span></pre>
+</div>
+<p>上面是一个用户用播放器播放文件简单示例，用户操作是OperationMain类中的PlayMedia方法，打开一个播放器，选择一个文件来播放。先看看他们之间的依赖关系，可以简单找到有3个依赖</p>
+<ol>
+<li><strong>Player依赖MediaFile</strong></li>
+<li><strong>OperationMain依赖Player</strong></li>
+<li><strong>OperationMain依赖MediaFile</strong></li>
+</ol>
+<h1>2.依赖倒置</h1>
+<p>需求增加了，要用不同的播放器，播放不同的文件，我们要抽象出来，减少耦合。</p>
+<p>耦合关系就是依赖关系，如果依赖关系相当繁杂，牵一发而动全身，很难维护；依赖关系越少，耦合关系就越低，系统就越稳定，所以我们要减少依赖。</p>
+<p>幸亏Robert Martin大师提出了面向对象设计原则----依赖倒置原则： 　　</p>
+<ul>
+<li><strong>A. 上层模块不应该依赖于下层模块，它们共同依赖于一个抽象。 　</strong></li>
+<li><strong>B. 抽象不能依赖于具象，具象依赖于抽象。</strong></li>
+</ul>
+<p>理解：A.上层是使用者，下层是被使用者，这就导致的结果是上层依赖下层了，下层变动了，自然就会影响到上层了，导致系统不稳定，甚至是牵一发而动全身。那怎么减少依赖呢？就是上层和下层都去依赖另一个抽象，这个抽象比较稳定，整个就来说就比较稳定了。</p>
+<p>B.面向对象编程时面向抽象或者面向借口编程，抽象一般比较稳定，实现抽象的具体肯定是要依赖抽象的，抽象不应该去依赖别的具体，应该依赖抽象。</p>
+<p>&nbsp;</p>
+<p>上面播放器的示例中，我们已经找到依赖关系了，现在我们要按照依赖倒置原则，来进行优化。</p>
+<p>根据原则如下改动：</p>
+<ul>
+<li><strong>Player依赖MediaFile，好办，让Player和MediaFile都去依赖一个抽象IMediaFile</strong></li>
+<li><strong>OperationMain依赖Player，好办，让OperationMain和Player都依赖一个抽象IPlayer</strong></li>
+<li><strong>OperationMain依赖MediaFile，好办，让OperationMain和MediaFile都依赖一个抽象IMediaFile</strong></li>
+<li><strong>IPlayer不能依赖具体MediaFile，应该依赖于具体MediaFile的抽象IMediaFile</strong></li>
+</ul>
+<p>结构很简单，于是代码大致如下：</p>
+<div class="cnblogs_code">
+<pre>    <span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 用户播放媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> OperationMain
+    {<br /><br /></span><span style="color: #0000ff;">        public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> PlayMedia()
+        {
+            IMediaFile _mtype </span>= <span style="color: #0000ff;">new</span><span style="color: #000000;"> MediaFile();
+            IPlayer _player </span>= <span style="color: #0000ff;">new</span><span style="color: #000000;"> Player();
+
+            _player.Play(_mtype);
+        }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 播放器
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">interface</span><span style="color: #000000;"> IPlayer
+    {
+        </span><span style="color: #0000ff;">void</span><span style="color: #000000;"> Play(IMediaFile file);
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 默认播放器
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> Player : IPlayer
+    {
+        </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> Play(IMediaFile file)
+        {
+            Console.WriteLine(file.FilePath);
+        }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">interface</span><span style="color: #000000;"> IMediaFile
+    {
+        </span><span style="color: #0000ff;">string</span> FilePath { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span><span style="color: #000000;">; }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 默认媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> MediaFile : IMediaFile
+    {
+        </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">string</span> FilePath { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span><span style="color: #000000;">; }
+    }</span></pre>
+</div>
+<p>上面代码进行了抽象，可以看到，目的是减少了依赖，但是看上去依赖关系增加了，如用户PlayMedia方法，依赖还增加了依赖接口和具体的实现，但是接口是稳定的，可以不考虑，具体的实现才是变动的，这个依赖还是要的，要播放文件，必定要用到具体的播放器和具体文件。</p>
+<h1>3.控制反转(IoC)</h1>
+<p>现实生活中，是具体的播放器和具体的媒体文件没有关系，你给它一个Mp3文件他可以播放，给它一个Mp4文件它也可以播放，你删掉你的媒体文件，播放器照样在，具体什么播放器，播放什么文件，控制权全部是我们用户自己。</p>
+<p>上面的示例中基本实现了隔离，具体的播放器跟具体的媒体隔离了，具体的播放器只跟媒体接口和播放器接口有关。但是<span style="color: #000000;">PlayMedia</span>的方法里面的具体对象，写死了，控制权非常小，如果我想用百度影音播放呢，我想换一首音乐呢，只能重新改代码，那控制怎么进行转移呢？</p>
+<p>我们可以通过反射来创建，把具体的文件名写在配置文件里，这时候客户端代码也不用变了，只需要改配置文件就好了，稳定性又有了提高，如下：</p>
+<div class="cnblogs_code">
+<pre>        <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> PlayMedia()
+        {
+            IMediaFile _mtype </span>= Assembly.Load(ConfigurationManager.AppSettings[<span style="color: #800000;">"</span><span style="color: #800000;">AssemName</span><span style="color: #800000;">"</span>]).CreateInstance(ConfigurationManager.AppSettings[<span style="color: #800000;">"</span><span style="color: #800000;">MediaName</span><span style="color: #800000;">"</span><span style="color: #000000;">]);
+            IPlayer _player </span>= Assembly.Load(ConfigurationManager.AppSettings[<span style="color: #800000;">"</span><span style="color: #800000;">AssemName</span><span style="color: #800000;">"</span>]).CreateInstance(ConfigurationManager.AppSettings[<span style="color: #800000;">"</span><span style="color: #800000;">PlayerName</span><span style="color: #800000;">"</span><span style="color: #000000;">]);
+
+            _player.Play(_mtype);
+        }</span></pre>
+</div>
+<p>这个具对象是哪一个，全由配置文件来控制了，这个具体对象的控制权交给了配置文件了，这也是人们常说的控制反转。</p>
+<p>控制反转IoC是Inversion of Control的缩写，是说对象的控制权进行转移，转移到第三方，比如转移交给了IoC容器，它就是一个创建工厂，你要什么对象，它就给你什么对象，有了IoC容器，依赖关系就变了，原先的依赖关系就没了，它们都依赖IoC容器了，通过IoC容器来建立它们之间的关系。</p>
+<h1>4.依赖注入(DI)</h1>
+<p>上面说到控制反转，是一个思想概念，但是也要具体实现的，上面的配置文件也是一种实现方式。依赖注入提出了具体的思想。</p>
+<p>依赖注入DI是Dependency Injection缩写，它提出了&ldquo;哪些东东的控制权被反转了，被转移了？&rdquo;，它也给出了答案：&ldquo;依赖对象的创建获得被反转&rdquo;。</p>
+<p>所谓依赖注入，就是由IoC容器在运行期间，动态地将某种依赖关系注入到对象之中。</p>
+<p>上面的示例中，哪些要依赖注入，依赖对象需要获得实例的地方，即 PlayMedia方法，需要IPlayer具体对象和IMediaFile的具体对象，找到了地方就从这里下手，为了灵活的控制这两个对象，必须是外面能够控制着两个对象的实例化，提供对外的操作是必要的，可以是属性，可以是方法，可以是构造函数，总之别的地方可以控制它，下面将会使用Unity来注入，使用的是构造函数注入，代码如下：</p>
+<div class="cnblogs_code">
+<pre>    <span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 用户播放媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> OperationMain
+    {
+        IMediaFile _mtype;
+        IPlayer _player;
+
+        </span><span style="color: #0000ff;">public</span><span style="color: #000000;"> OperationMain(IPlayer player, IMediaFile mtype)
+        {
+            _player </span>=<span style="color: #000000;"> player;
+            _mtype </span>=<span style="color: #000000;"> mtype;
+        }
+
+        </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> PlayMedia()
+        {
+            _player.Play(_mtype);
+        }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 播放器
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">interface</span><span style="color: #000000;"> IPlayer
+    {
+        </span><span style="color: #0000ff;">void</span><span style="color: #000000;"> Play(IMediaFile file);
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 默认播放器
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> Player : IPlayer
+    {
+        </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> Play(IMediaFile file)
+        {
+            Console.WriteLine(file.FilePath);
+        }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">interface</span><span style="color: #000000;"> IMediaFile
+    {
+        </span><span style="color: #0000ff;">string</span> FilePath { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span><span style="color: #000000;">; }
+    }
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;summary&gt;</span>
+    <span style="color: #808080;">///</span><span style="color: #008000;"> 默认媒体文件
+    </span><span style="color: #808080;">///</span> <span style="color: #808080;">&lt;/summary&gt;</span>
+    <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> MediaFile : IMediaFile
+    {
+        </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">string</span> FilePath { <span style="color: #0000ff;">get</span>; <span style="color: #0000ff;">set</span><span style="color: #000000;">; }
+    }</span></pre>
+</div>
+<p>给 OperationMain类一个构造函数，因为Unity有一个构造函数注入，调用代码如下：</p>
+<div class="cnblogs_code">
+<pre>        <span style="color: #0000ff;">static</span> UnityContainer container = <span style="color: #0000ff;">new</span><span style="color: #000000;"> UnityContainer();
+        </span><span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> init()
+        {
+            container.RegisterType</span>&lt;IPlayer, Player&gt;<span style="color: #000000;">();
+            container.RegisterType</span>&lt;IMediaFile, MediaFile&gt;<span style="color: #000000;">();
+        }
+        </span><span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span> Main(<span style="color: #0000ff;">string</span><span style="color: #000000;">[] args)
+        {
+</span>
+<span style="color: #000000;">            init();
+
+            OperationMain op1 </span>= container.Resolve&lt;OperationMain&gt;<span style="color: #000000;">();
+            op1.PlayMedia();
+            OperationMain op3 </span>= container.Resolve&lt;OperationMain&gt;<span style="color: #000000;">();
+            op3.PlayMedia();
+
+            </span><span style="color: #008000;">//</span><span style="color: #008000;">普通方式</span>
+            OperationMain op2 = <span style="color: #0000ff;">new</span> OperationMain(<span style="color: #0000ff;">new</span> Player(), <span style="color: #0000ff;">new</span><span style="color: #000000;"> MediaFile());
+            op2.PlayMedia();
+
+            Console.Read();
+        }</span></pre>
+</div>
+<p>看出来吧，Unity的功能远不止这些，你可以初始化时注册N多，以后直接使用，而不用使用new，还有实例周期的控制、配置文件等灵活控制，具体可以看看Unity（具体不是本节的范畴）的说明。</p>
+<h1>5.小结</h1>
+<p>通过一个小例子由浅入深地进行优化，已加深对IoC模式的理解，我想复杂的结构也是从这种简单的架构累加起来的。</p>
+<p>最近在看相关文章，很多都太专业化了没怎么看懂，这是自己现在对IoC的一些理解，记录下来，要不然时间一久，也就忘了。</p>
+<p>自己对IoC模式理解还很浅，希望得到各位的指点。</p>
+<p>&nbsp;</p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+    <div id="blog_post_info"></div>
+    <div class="clear"></div>
+    <div id="post_next_prev"></div>
+</div>
+	<div class="postDesc">posted on 
+<span id="post-date">2012-10-09 08:56</span>&nbsp;<a href="https://www.cnblogs.com/qqlin/">Qlin</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>) <a href="https://i.cnblogs.com/EditPosts.aspx?postid=2707075" rel="nofollow"> 编辑</a> <a href="javascript:void(0)" onclick="AddToWz(2707075); return false;">收藏</a>
+</div>
+</div>
+
+
+<script src="https://common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 121548, cb_blogApp = 'qqlin', cb_blogUserGuid = '495fcf78-d1c4-e111-aa3f-842b2b196315';
+    var cb_entryId = 2707075, cb_entryCreatedDate = '2012-10-09 08:56', cb_postType = 1; 
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container"></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"></div>
+    <div id="opt_under_post"></div>
+    <script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
+    <script>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+    </script>
+    <script>
+        googletag.cmd.push(function () {
+            googletag.defineSlot("/1090369/C1", [300, 250], "div-gpt-ad-1546353474406-0").addService(googletag.pubads());
+            googletag.defineSlot("/1090369/C2", [468, 60], "div-gpt-ad-1539008685004-0").addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    </script>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;"></div>
+    </div>
+    <div id="under_post_news"></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;">
+            <script>
+                if (new Date() >= new Date(2018, 9, 13)) {
+                    googletag.cmd.push(function () { googletag.display("div-gpt-ad-1539008685004-0"); });
+                }
+            </script>
+        </div>
+    </div>
+    <div id="under_post_kb"></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+        deliverAdT2();
+        deliverAdC1();
+        deliverAdC2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div></div>
+
+
+		</div>
+	</div>
+	<!-- left ends -->
+	<!-- right starts -->
+	<div id="right">
+		<!-- 右侧工具部分 -->
+		<div id="right_content">
+	
+			
+<div id="sidebar_news" class="newsItem">
+            <script>loadBlogNews();</script>
+</div>
+
+	
+			<div id="calendar"><div id="calendar"><div id="blog-calendar" style="display:none"></div></div>                
+                    <script>loadBlogDefaultCalendar();</script></div>
+			
+				<DIV id="leftcontentcontainer">
+					<div id="blog-sidecolumn"></div>
+                    <script>loadBlogSideColumn();</script>
+				</DIV>
+			
+		</div>
+		<!-- //右侧工具部分 -->
+		<div id="footer">
+			<!--done-->
+Copyright &copy; 2019 Qlin
+<br /><span id="poweredby">Powered by .NET Core 3.0.0 on Linux</span>
+
+
+
+		</div>
+	</div>
+	<!-- right ends -->
+	<div class="clear"></div>
+	
+</div>
+
+
+    
+</body>
+</html>
